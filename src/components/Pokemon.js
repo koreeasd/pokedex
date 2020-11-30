@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Link, CircularProgress, Button } from "@material-ui/core";
+import {
+  Typography,
+  Link,
+  CircularProgress,
+  Button,
+  Grid,
+} from "@material-ui/core";
 import { toFirstCharUppercase } from "../constants";
 import axios from "axios";
 
@@ -36,38 +42,64 @@ const Pokemon = (props) => {
 
     return (
       <>
-        <Typography variant="h2">
-          {`${id}.`} {toFirstCharUppercase(name)}
-          <img src={front_default} />
-        </Typography>
-        <img style={{ width: "300px", height: "300px" }} src={fullImageUrl} />
-        <Typography variant="h3">Pokemon info</Typography>
-        <Typography>
-          {"Species: "}
-          <Link href={species.url}>{species.name}</Link>
-        </Typography>
-        <Typography>Height: {height}</Typography>
-        <Typography>Weight: {weight}</Typography>
-        <Typography variant="h6">Types:</Typography>
-        {types.map((typeInfo) => {
-          const { type } = typeInfo;
-          const { name } = type;
-          return <Typography key={name}> {`${name}`}</Typography>;
-        })}
+        <Grid container xs={12} justify="center">
+          <Grid item xs={12} sm={6}>
+            <Typography variant="h2">
+              {`${id}.`} {toFirstCharUppercase(name)}
+              <img src={front_default} alt="pokemon" />
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container xs={12} justify="center" spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <img
+              style={{ width: "300px", height: "300px" }}
+              src={fullImageUrl}
+              alt="pokemon"
+            />
+          </Grid>
+        </Grid>
+        <Grid container xs={12} justify="center" spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="h3">Pokemon info</Typography>
+          </Grid>
+        </Grid>
+        <Grid container xs={12} justify="center" spacing={3}>
+          <Grid item xs={6} sm={3}>
+            <Typography>
+              {"Species: "}
+              <Link href={species.url}>{species.name}</Link>
+            </Typography>
+            <Typography>Height: {height}</Typography>
+            <Typography>Weight: {weight}</Typography>
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <Typography variant="h6">Types:</Typography>
+            {types.map((typeInfo) => {
+              const { type } = typeInfo;
+              const { name } = type;
+              return <Typography key={name}> {`${name}`}</Typography>;
+            })}
+          </Grid>
+        </Grid>
       </>
     );
   };
 
   return (
     <>
-      {pokemon === undefined && <CircularProgress />}
-      {pokemon !== undefined && pokemon && generatePokemonJSX()}
-      {pokemon === false && <Typography> Pokemon not found</Typography>}
       {pokemon !== undefined && (
-        <Button variant="contained" onClick={() => history.push("/")}>
+        <Button
+          variant="contained"
+          onClick={() => history.push("/")}
+          style={{ margin: "10px" }}
+        >
           Back to pokedex
         </Button>
       )}
+      {pokemon === undefined && <CircularProgress />}
+      {pokemon !== undefined && pokemon && generatePokemonJSX()}
+      {pokemon === false && <Typography> Pokemon not found</Typography>}
     </>
   );
 };
